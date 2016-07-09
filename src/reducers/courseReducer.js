@@ -15,6 +15,8 @@ export default function courseReducer(state=initialState.courses, action) {
         ...state.filter(course => course.id !== action.course.id),
         Object.assign({}, action.course)
       ]
+    case types.AJAX_CALL_ERROR:
+      return state
 
     default:
       return state

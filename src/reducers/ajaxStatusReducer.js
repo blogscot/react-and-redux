@@ -4,7 +4,8 @@ import initialState from './initialState'
 export default function ajaxStatusReducer(state=initialState.ajaxCallsInProgress, action) {
   if (action.type == types.BEGIN_AJAX_CALL) {
     return state + 1
-  } else if (action.type.endsWith('_SUCCESS')) {
+  } else if (action.type.endsWith('_SUCCESS') ||
+             action.type.endsWith('_ERROR')) {
     return state - 1
   }
 

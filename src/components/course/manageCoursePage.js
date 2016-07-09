@@ -5,6 +5,7 @@ import {browserHistory} from 'react-router'
 
 import * as courseActions from '../../actions/courseActions'
 import CourseForm from './courseForm'
+import toastr from 'toastr'
 
 class ManageCoursePage extends React.Component {
   constructor(props, context) {
@@ -12,7 +13,8 @@ class ManageCoursePage extends React.Component {
 
     this.state = {
       course: Object.assign({}, props.course),
-      errors: {}
+      errors: {},
+      saving: false
     }
     this.onChange = this.onChange.bind(this)
     this.onSave = this.onSave.bind(this)
@@ -33,7 +35,17 @@ class ManageCoursePage extends React.Component {
 
   onSave(event) {
     event.preventDefault()
+    this.setState({saving: true})
     this.props.actions.saveCourse(this.state.course)
+      .then(() => this.redirect('Course saved'), (error) => {
+        toastr.error(error)
+        this.setState({saving: false})
+      })
+  }
+
+  redirect(msg) {
+    this.setState({saving: false})
+    toastr.success(msg)
     this.context.router.push('/courses')
   }
 
@@ -48,6 +60,7 @@ class ManageCoursePage extends React.Component {
           errors={this.state.errors}
           onChange={this.onChange}
           onSave={this.onSave}
+          saving={this.state.saving}
           />
       </div>
     )
