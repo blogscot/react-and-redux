@@ -28,6 +28,7 @@ class ManageCoursePage extends React.Component {
   onSave(event) {
     event.preventDefault()
     this.props.actions.saveCourse(this.state.course)
+    this.context.router.push('/courses')
   }
 
   render() {
@@ -51,6 +52,11 @@ ManageCoursePage.propTypes = {
   course: PropTypes.object.isRequired,
   authors: PropTypes.array.isRequired,
   actions: PropTypes.object.isRequired
+}
+
+// Pull in the React Router context so router is available on this.context.router
+ManageCoursePage.contextTypes = {
+  router: PropTypes.object
 }
 
 function mapStateToProps(state, ownProps) {
