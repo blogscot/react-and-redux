@@ -1,6 +1,8 @@
 import React, {PropTypes} from 'react'
 import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
+import {browserHistory} from 'react-router'
+
 import * as courseActions from '../../actions/courseActions'
 import CourseForm from './courseForm'
 
@@ -12,6 +14,20 @@ class ManageCoursePage extends React.Component {
       course: Object.assign({}, props.course),
       errors: {}
     }
+    this.onChange = this.onChange.bind(this)
+    this.onSave = this.onSave.bind(this)
+  }
+
+  onChange(event) {
+    const field = event.target.name
+    let course = this.state.course
+    course[field] = event.target.value
+    return this.setState({course: course})
+  }
+
+  onSave(event) {
+    event.preventDefault()
+    this.props.actions.saveCourse(this.state.course)
   }
 
   render() {
@@ -23,8 +39,8 @@ class ManageCoursePage extends React.Component {
           allAuthors={authors}
           course={this.state.course}
           errors={this.state.errors}
-          onChange={function() {}}
-          onSave={function() {}}
+          onChange={this.onChange}
+          onSave={this.onSave}
           />
       </div>
     )
@@ -33,7 +49,8 @@ class ManageCoursePage extends React.Component {
 
 ManageCoursePage.propTypes = {
   course: PropTypes.object.isRequired,
-  authors: PropTypes.array.isRequired
+  authors: PropTypes.array.isRequired,
+  actions: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state, ownProps) {
