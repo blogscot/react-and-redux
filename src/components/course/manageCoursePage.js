@@ -15,13 +15,16 @@ class ManageCoursePage extends React.Component {
   }
 
   render() {
+    const {authors} = this.props
     return (
       <div>
         <h1>Manage Course</h1>
         <CourseForm
-          allAuthors={[]}
+          allAuthors={authors}
           course={this.state.course}
           errors={this.state.errors}
+          onChange={function() {}}
+          onSave={function() {}}
           />
       </div>
     )
@@ -29,20 +32,23 @@ class ManageCoursePage extends React.Component {
 }
 
 ManageCoursePage.propTypes = {
-  course: PropTypes.object.isRequired
+  course: PropTypes.object.isRequired,
+  authors: PropTypes.array.isRequired
 }
 
 function mapStateToProps(state, ownProps) {
-  let course = {
-    id: '',
-    watchHref: '',
-    title: '',
-    authorId: '',
-    length: '',
-    category: ''
-  }
+  let course = { id: '', watchHref: '', title: '', authorId: '', length: '', category: '' }
+
+  const authorsFormatted = state.authors.map(author => {
+    return {
+      value: author.id,
+      text: author.firstName + ' ' + author.lastName
+    }
+  })
+
   return {
-    course: course
+    course: course,
+    authors: authorsFormatted
   }
 }
 
