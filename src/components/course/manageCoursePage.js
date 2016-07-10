@@ -53,7 +53,6 @@ class ManageCoursePage extends React.Component {
     const {authors} = this.props
     return (
       <div>
-        <h1>Manage Course</h1>
         <CourseForm
           allAuthors={authors}
           course={this.state.course}
