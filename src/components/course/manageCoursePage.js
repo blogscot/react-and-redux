@@ -3,9 +3,11 @@ import {connect} from 'react-redux'
 import {bindActionCreators} from 'redux'
 import {browserHistory} from 'react-router'
 
+import toastr from 'toastr'
+
 import * as courseActions from '../../actions/courseActions'
 import CourseForm from './courseForm'
-import toastr from 'toastr'
+import {authorsFormattedForDropdown} from '../../selectors/selectors'
 
 export class ManageCoursePage extends React.Component {
   constructor(props, context) {
@@ -39,8 +41,8 @@ export class ManageCoursePage extends React.Component {
     if (this.state.course.title.length < 5) {
       errors.title = 'Title must be at least 5 characters.'
       formIsValid = false
+      this.setState({errors: errors})
     }
-    this.setState({errors: errors})
     return formIsValid
   }
 
@@ -104,16 +106,9 @@ function mapStateToProps(state, ownProps) {
     course = getCourseById(state.courses, courseId)
   }
 
-  const authorsFormatted = state.authors.map(author => {
-    return {
-      value: author.id,
-      text: author.firstName + ' ' + author.lastName
-    }
-  })
-
   return {
     course: course,
-    authors: authorsFormatted
+    authors: authorsFormattedForDropdown(state.authors)
   }
 }
 
